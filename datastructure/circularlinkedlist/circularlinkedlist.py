@@ -63,10 +63,27 @@ class CircularLinkedList:
             return None
         return self.as_list()[index]
 
-    def remove_node(self, data):
+    def remove_node_with_data(self, data):
         if not self.head:
             return
         node = self.find_node(data)
+        if not node:
+            return
+        if self.head == node:
+            self.tail_node().next = self.head.next
+            self.head = self.head.next
+        current_node = self.head
+        while current_node:
+            if current_node.next == node:
+                current_node.next = node.next
+            else:
+                current_node = current_node.next
+                if current_node == self.head:
+                    return
+
+    def remove_node(self, node):
+        if not self.head:
+            return
         if not node:
             return
         if self.head == node:
@@ -95,26 +112,4 @@ class CircularLinkedList:
             list_2_tail.next = list_2_head
             return list_1_head, list_2_head
 
-
-if __name__ == '__main__':
-    circular_linked_list = CircularLinkedList()
-    circular_linked_list.print_list()
-    circular_linked_list.remove_node("H")
-    print("Tail Node:", circular_linked_list.tail_node())
-    circular_linked_list.append("A")
-    circular_linked_list.print_list()
-    circular_linked_list.append("B")
-    circular_linked_list.print_list()
-    print("Tail Node data:", circular_linked_list.tail_node().data)
-    circular_linked_list.prepend("0")
-    circular_linked_list.print_list()
-    circular_linked_list.remove_node("0")
-    circular_linked_list.print_list()
-    circular_linked_list.append("C")
-    circular_linked_list.append("D")
-    circular_linked_list.append("E")
-    circular_linked_list.print_list()
-    (a, b) = circular_linked_list.split_list()
-    print(a)
-    print(b)
 

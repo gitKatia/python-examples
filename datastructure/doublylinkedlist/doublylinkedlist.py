@@ -69,5 +69,18 @@ class DoublyLinkedList:
                 return node
         return None
 
+    def delete_node(self, key):
+        node = self.find_node_by_key(key)
+        if not node:
+            return
+        if node == self.head:
+            self.head = node.next
+            node.next.previous = None
+        elif node == self.tail_node():
+            node.previous.next = None
+        else:
+            node.previous.next = node.next
+            node.next = None
+
     def __str__(self):
         return str([str(node.data) for node in self.as_list()])

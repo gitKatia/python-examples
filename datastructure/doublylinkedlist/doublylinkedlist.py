@@ -12,7 +12,7 @@ class DoublyLinkedList:
             return
         new_node = Node(data)
         new_node.next = node.next
-        new_node.previous = node.previous
+        new_node.previous = node
         node.next = new_node
 
     def add_node_before(self, key, data):
@@ -20,9 +20,11 @@ class DoublyLinkedList:
         if not node:
             return
         new_node = Node(data)
-        node.previous.next = new_node
-        new_node.previous = node.previous
+        previous_node = node.previous
+        new_node.previous = previous_node
         new_node.next = node
+        previous_node.next = new_node
+        node.previous = new_node
 
     def append(self, data):
         new_node = Node(data)
@@ -77,10 +79,22 @@ class DoublyLinkedList:
             self.head = node.next
             node.next.previous = None
         elif node == self.tail_node():
-            node.previous.next = None
+            previous_node = node.previous
+            previous_node.next = None
         else:
-            node.previous.next = node.next
-            node.next = None
+            previous_node = node.previous
+            previous_node.next = node.next
+            node.next.previous = previous_node
+
+    def reverse(self):
+        if self.is_empty():
+            return
+        for node in self.as_list():
+            previous_node = node.previous
+            next_node = node.next
+            node.next = previous_node
+            node.previous = next_node
+        self.head = node
 
     def __str__(self):
         return str([str(node.data) for node in self.as_list()])

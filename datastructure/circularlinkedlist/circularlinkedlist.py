@@ -1,7 +1,4 @@
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.next = None
+from datastructure.node import Node
 
 
 class CircularLinkedList:
@@ -11,7 +8,7 @@ class CircularLinkedList:
 
     def prepend(self, data):
         new_node = Node(data)
-        if not self.head:
+        if self.is_empty():
             self.head = new_node
             new_node.next = self.head
         else:
@@ -21,12 +18,16 @@ class CircularLinkedList:
 
     def append(self, data):
         new_node = Node(data)
-        if not self.head:
+        if self.is_empty():
             self.head = new_node
             new_node.next = self.head
         else:
             new_node.next = self.head
             self.tail_node().next = new_node
+
+    def bulk_append(self, data_list):
+        for data in data_list:
+            self.append(data)
 
     def as_list(self):
         node_list = []
@@ -41,22 +42,19 @@ class CircularLinkedList:
     def list_size(self):
         return len(self.as_list())
 
-    def print_list(self):
-        node_list = [node.data for node in self.as_list()]
-        print(node_list)
+    def is_empty(self):
+        return self.list_size() == 0
 
     def tail_node(self):
-        if not self.head:
+        if self.is_empty():
             return None
-        return self.as_list()[self.list_size() - 1]
+        return self.as_list()[-1]
 
     def find_node(self, data):
         return [node for node in self.as_list() if node.data == data][0]
 
     def find_node_by_index(self, index):
-        if index < 0:
-            return None
-        if not self.head:
+        if index < 0 or self.is_empty():
             return None
         list_size = self.list_size()
         if index > list_size - 1:
@@ -64,7 +62,7 @@ class CircularLinkedList:
         return self.as_list()[index]
 
     def remove_node_with_data(self, data):
-        if not self.head:
+        if self.is_empty():
             return
         node = self.find_node(data)
         if not node:
@@ -82,7 +80,7 @@ class CircularLinkedList:
                     return
 
     def remove_node(self, node):
-        if not self.head:
+        if self.is_empty():
             return
         if not node:
             return
@@ -98,18 +96,45 @@ class CircularLinkedList:
                 if current_node == self.head:
                     return
 
-    def split_list(self):
-        if not self.head:
-            return self.head, self.head
+    @classmethod
+    def is_circular_linked_list(cls, linked_list):
+        tail_node = linked_list.tail_node()
+        if not tail_node or not tail_node.next:
+            return False
+        if tail_node.next == linked_list.head:
+            return True
+
+    @classmethod
+    def split_list(cls, circular_linked_list):
+        if circular_linked_list.is_empty() or circular_linked_list.list_size() == 1:
+            return circular_linked_list.head, circular_linked_list.head
         else:
-            list_size = self.list_size()
+            list_size = circular_linked_list.list_size()
             list_1_size = list_size // 2
-            list_1_head = self.head
-            list_1_tail = self.find_node_by_index(list_1_size - 1)
-            list_2_head = self.find_node_by_index(list_1_size)
-            list_2_tail = self.tail_node()
+            list_1_head = circular_linked_list.head
+            list_1_tail = circular_linked_list.find_node_by_index(list_1_size - 1)
+            list_2_head = circular_linked_list.find_node_by_index(list_1_size)
+            list_2_tail = circular_linked_list.tail_node()
             list_1_tail.next = list_1_head
             list_2_tail.next = list_2_head
             return list_1_head, list_2_head
+
+    @classmethod
+    def josephus(cls, circular_linked_list, k):
+        if circular_linked_list.is_empty():
+            return None
+        current_node = circular_linked_list.head
+        length = circular_linked_list.list_size()
+        while length > 1:
+            count = 1
+            while count <= k:
+                current_node = current_node.next
+                count = count + 1
+            circular_linked_list.remove_node(current_node)
+            length = circular_linked_list.list_size()
+
+    def __str__(self):
+        return str([str(node.data) for node in self.as_list()])
+
 
 

@@ -71,9 +71,23 @@ class DoublyLinkedList:
                 return node
         return None
 
-    def delete_node(self, key):
+    def delete_node_by_key(self, key):
         node = self.find_node_by_key(key)
         if not node:
+            return
+        if node == self.head:
+            self.head = node.next
+            node.next.previous = None
+        elif node == self.tail_node():
+            previous_node = node.previous
+            previous_node.next = None
+        else:
+            previous_node = node.previous
+            previous_node.next = node.next
+            node.next.previous = previous_node
+
+    def delete_node(self, node):
+        if not node or not self.head:
             return
         if node == self.head:
             self.head = node.next
@@ -95,6 +109,18 @@ class DoublyLinkedList:
             node.next = previous_node
             node.previous = next_node
         self.head = node
+
+    def remove_duplicates(self):
+        if self.is_empty():
+            return
+        data_list = []
+        for node in self.as_list():
+            data = node.data
+            if data in data_list:
+                self.delete_node(node)
+            else:
+                data_list.append(data)
+
 
     def __str__(self):
         return str([str(node.data) for node in self.as_list()])

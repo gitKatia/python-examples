@@ -6,6 +6,24 @@ class DoublyLinkedList:
     def __init__(self):
         self.head = None
 
+    def add_node_after(self, key, data):
+        node = self.find_node_by_key(key)
+        if not node:
+            return
+        new_node = Node(data)
+        new_node.next = node.next
+        new_node.previous = node.previous
+        node.next = new_node
+
+    def add_node_before(self, key, data):
+        node = self.find_node_by_key(key)
+        if not node:
+            return
+        new_node = Node(data)
+        node.previous.next = new_node
+        new_node.previous = node.previous
+        new_node.next = node
+
     def append(self, data):
         new_node = Node(data)
         if self.is_empty():
@@ -42,6 +60,14 @@ class DoublyLinkedList:
         if self.is_empty():
             return None
         return self.as_list()[-1]
+
+    def find_node_by_key(self, data):
+        if self.is_empty():
+            return None
+        for node in self.as_list():
+            if node.data == data:
+                return node
+        return None
 
     def __str__(self):
         return str([str(node.data) for node in self.as_list()])

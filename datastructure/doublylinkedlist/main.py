@@ -57,3 +57,6 @@ if __name__ == '__main__':
     print("Head Previous", doubly_linked_list.as_list()[0].previous)
     print("Tail Next", doubly_linked_list.as_list()[-1].next)
     print("Tail Previous Data", doubly_linked_list.as_list()[-1].previous.data)
+    new_doubly_linked_list = DoublyLinkedList()
+    new_doubly_linked_list.bulk_append([1, 2, 3, 4, 5, 6])
+    print(DoublyLinkedList.pairs_with_sum(new_doubly_linked_list, 5))

@@ -121,6 +121,25 @@ class DoublyLinkedList:
             else:
                 data_list.append(data)
 
+    @staticmethod
+    def pairs_with_sum(linked_list, sum_val):
+        if linked_list.is_empty():
+            return []
+        current_node = linked_list.head
+        res_list = []
+        while current_node:
+            linked_list.update_list(current_node, res_list, sum_val)
+            current_node = current_node.next
+        return res_list
+
+    @staticmethod
+    def update_list(current_node, res_list, sum_val):
+        data = current_node.data
+        while current_node:
+            data_next = current_node.data
+            if data + data_next == sum_val:
+                res_list.append("(" + str(data) + "," + str(data_next) + ")")
+            current_node = current_node.next
 
     def __str__(self):
         return str([str(node.data) for node in self.as_list()])

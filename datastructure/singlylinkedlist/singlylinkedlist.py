@@ -196,6 +196,18 @@ class SinglyLinkedList:
         list_2 = list_1[::-1]
         return list_1 == list_2
 
+    def move_tail_to_head(self):
+        if self.is_empty():
+            return
+        current_node = self.head
+        previous_node = None
+        while current_node.next:
+            previous_node = current_node
+            current_node = current_node.next
+        previous_node.next = None
+        current_node.next = self.head
+        self.head = current_node
+        
     def __str__(self):
         return str([str(node.data) for node in self.as_list()])
 

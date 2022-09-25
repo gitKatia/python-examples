@@ -174,6 +174,28 @@ class SinglyLinkedList:
             node2.next = next_1
             node1.next = next_2
 
+    def remove_duplicates(self):
+        if self.is_empty():
+            return
+        current_node = self.head
+        data_list = []
+        while current_node:
+            if current_node.data in data_list:
+                self.delete_node_by_key(current_node.data)
+            else:
+                data_list.append(current_node.data)
+            current_node = current_node.next
+
+    def count_occurrences(self, key):
+        return len([node for node in self.as_list() if node.data == key])
+
+    def is_palindrome(self):
+        if self.is_empty():
+            return True
+        list_1 = [node.data for node in self.as_list()]
+        list_2 = list_1[::-1]
+        return list_1 == list_2
+
     def __str__(self):
         return str([str(node.data) for node in self.as_list()])
 

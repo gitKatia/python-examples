@@ -207,7 +207,7 @@ class SinglyLinkedList:
         previous_node.next = None
         current_node.next = self.head
         self.head = current_node
-        
+
     def __str__(self):
         return str([str(node.data) for node in self.as_list()])
 
